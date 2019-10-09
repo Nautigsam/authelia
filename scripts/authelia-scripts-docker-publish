@@ -16,7 +16,7 @@ function login_to_dockerhub {
 function deploy_on_dockerhub {
   TAG=$1
   IMAGE_NAME=authelia:dist
-  DOCKERHUB_IMAGE_NAME=clems4ever/authelia
+  DOCKERHUB_IMAGE_NAME=nautigsam/authelia
   IMAGE_WITH_TAG=$DOCKERHUB_IMAGE_NAME:$TAG
 
   echo "==========================================================="

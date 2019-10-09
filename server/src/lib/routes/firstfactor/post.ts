@@ -13,8 +13,6 @@ import { URLDecomposer } from "../..//utils/URLDecomposer";
 import { Object } from "../../../lib/authorization/Object";
 import { Subject } from "../../../lib/authorization/Subject";
 import AuthenticationError from "../../../lib/authentication/AuthenticationError";
-import IsRedirectionSafe from "../../../lib/utils/IsRedirectionSafe";
-import * as URLParse from "url-parse";
 import GetHeader from "../../utils/GetHeader";
 
 export default function (vars: ServerVariables) {
@@ -90,14 +88,9 @@ export default function (vars: ServerVariables) {
               authorizationLevel, JSON.stringify(resObject), JSON.stringify(subject), req.ip);
 
           if (authorizationLevel <= AuthorizationLevel.ONE_FACTOR) {
-            if (IsRedirectionSafe(vars, new URLParse(targetUrl))) {
-              vars.logger.debug(req, "sending redirect to: %s", targetUrl);
-              res.json({redirect: targetUrl});
-              return BluebirdPromise.resolve();
-            } else {
-              res.json({error: "You're authenticated but cannot be automatically redirected to an unsafe URL."});
-              return BluebirdPromise.resolve();
-            }
+            vars.logger.debug(req, "sending redirect to: %s", targetUrl);
+            res.json({redirect: targetUrl});
+            return BluebirdPromise.resolve();
           } else {
             vars.logger.debug(req, "Current authorization level %s indicates no further action for %s", authorizationLevel, username);
           }
